@@ -1,0 +1,6 @@
+train: C:\Users\bdawg\Documents\UC Merced\Spring 2023\CSE 155 Human Computer Interaction\Project\YOLO\train
+val: C:\Users\bdawg\Documents\UC Merced\Spring 2023\CSE 155 Human Computer Interaction\Project\YOLO\val
+
+nc: 1
+
+names: [crosswalk]
