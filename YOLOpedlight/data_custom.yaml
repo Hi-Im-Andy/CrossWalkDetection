@@ -1,6 +1,0 @@
-train: C:\Users\bdawg\Documents\UC Merced\Spring 2023\CSE 155 Human Computer Interaction\Project\YOLOpedlight\train
-val: C:\Users\bdawg\Documents\UC Merced\Spring 2023\CSE 155 Human Computer Interaction\Project\YOLOpedlight\val
-
-nc: 2
-
-names: ["stop", "go"]
