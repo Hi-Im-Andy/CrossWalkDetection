@@ -1,0 +1,53 @@
+* {
+	background-color: antiquewhite;
+}
+h1 {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 80px;
+	text-align: center;
+}
+h2 {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 20px;
+	text-align: center;
+}
+
+.div {
+	text-align: center;
+}
+#container {
+	margin: 0px auto;
+	width: 500px;
+	height: 375px;
+	border: 10px #333 solid;
+}
+#videoElement {
+	width: 500px;
+	height: 375px;
+	background-color: #667;
+	/* align-items: center; */
+}
+#buttons {
+	text-align: center;
+}
+.on_button {
+	background-color: #00ff3c;
+}
+.off_button {
+	background-color: #fe0000;
+}
+.on_button, .off_button {
+	font-size: 25px;
+
+	position: relative;
+	left: 0px;
+	top: 40px;
+	border: none;
+	color: rgb(255, 255, 255);
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	height: 200px;
+	width: 200px;
+	border-radius: 100px;
+}

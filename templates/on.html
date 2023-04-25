@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA=compatible" content="IE=edge" />
+		<title>CROSS WALK</title>
+		<link rel="stylesheet" href="static/css/styles.css" />
+	</head>
+	<body>
+		<h1>CROSS AID</h1>
+		<h2>Status: Powered On</h2>
+		<div id="container">
+			<video autoplay="true" id="videoElement"></video>
+		</div>
+		<script>
+			let video = document.querySelector("#videoElement");
+			if (navigator.mediaDevices.getUserMedia) {
+				navigator.mediaDevices
+					.getUserMedia({ video: true })
+					.then(function (stream) {
+						video.srcObject = stream;
+					})
+					.catch(function (error) {
+						console.log("an error has occured!");
+					});
+			} else {
+				console.log("getUserMedia not supported ");
+			}
+		</script>
+		<div id="buttons">
+			<!-- replace the "on click" route with your function -->
+			<button class="off_button" onclick="window.location.href='/off'">
+				POWER OFF
+			</button>
+		</div>
+	</body>
+</html>
