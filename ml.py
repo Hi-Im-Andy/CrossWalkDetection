@@ -1,3 +1,28 @@
+# Before running, make sure to install ultralytics
+
+##################################################
+#                   Celery                       #
+##################################################
+
+# Import for backgound tasks, can be used to add delays, task be completed after the return
+from celery import Celery
+
+from flask import Flask
+
+app = Flask(__name__)
+
+# Create a celery instance
+celery = Celery(app.name, broker='pyamqp://guest@localhost//')
+
+# Set up configuration for celery
+celery.conf.update(
+    result_expires=3600,
+)
+
+##################################################
+#           Machine learninf results             #
+##################################################
+
 from ultralytics import YOLO
 from tts import say
 
@@ -11,8 +36,10 @@ print(ped_result)
 # Results is a list, need to extract just the predicted value 1 (go) or 0 (stop)
 # need to check the resulting value type
 # Passing in a live feed from app.py?
+# Live_feed can also be a directory
 # Call the 'say()' function with go
 
+@celery.task
 def check_pedlight(live_feed):
     ped_result = ped_model(live_feed) # Need to find location of the live feed
     
@@ -27,6 +54,7 @@ def check_pedlight(live_feed):
 
 
 # Same as the previous code but for the crosswalk instead of the light
+@celery.task
 def check_crosswalk(live_feed):
     cross_result = cross_model(live_feed)
 
