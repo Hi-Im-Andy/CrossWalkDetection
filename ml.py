@@ -39,6 +39,7 @@ print(ped_result)
 # Live_feed can also be a directory
 # Call the 'say()' function with go
 
+@celery.task
 def check_pedlight(live_feed):
     ped_result = ped_model(live_feed) # Need to find location of the live feed
     
@@ -53,6 +54,7 @@ def check_pedlight(live_feed):
 
 
 # Same as the previous code but for the crosswalk instead of the light
+@celery.task
 def check_crosswalk(live_feed):
     cross_result = cross_model(live_feed)
 
