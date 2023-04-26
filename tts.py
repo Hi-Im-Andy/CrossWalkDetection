@@ -1,9 +1,15 @@
+# Before running, check that mpg321 is installed if on linux
 
 # Importing os to save and play the audio
 import os
 
 # Import google text to speech
 from gtts import gTTS
+
+##################################################
+#                   Celery                       #
+##################################################
+
 
 # Import for backgound tasks, can be used to add delays, task be completed after the return
 from celery import Celery
@@ -19,6 +25,10 @@ celery = Celery(app.name, broker='pyamqp://guest@localhost//')
 celery.conf.update(
     result_expires=3600,
 )
+
+##################################################
+#           Text to Speech Function              #
+##################################################
 
 # Main Text to speech function
 @celery.task
