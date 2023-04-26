@@ -4,8 +4,8 @@
 # Generic imports
 from flask import Flask, render_template, request, url_for, redirect, session
 import base64
-import cv2
 import numpy as np
+from ml import check_pedlight
 
 # For the session secret key
 from os import urandom
@@ -33,6 +33,9 @@ def p(*kwargs):
     print(kwargs, file=stdout)
 
 
+
+
+
 ###################################################
 #                Route definitions                #
 ###################################################
@@ -50,20 +53,41 @@ def home():
 
 @app.route("/off")
 def off():
+    session["crosswalk_detected"] = False
     say("Off.")
     return render_template("off.html")
 
 
 @app.route("/on")
 def on():
+    session["crosswalk_detected"] = False
     say("Camera on.")
+    # live_feed(1)
     # check_pedlight.delay(live_feed)
     return render_template("on.html")
 
 
 @app.route("/process_frame", methods=["POST"])
 def process_frame():
-    image = open("./stored_images/tmp.png", "wb")
+    image = open("./stored_images/image.jpg", "wb")
     image.write(base64.b64decode(request.get_json()["image"]))
     image.close()
+    check_pedlight()
     return "Request completed"
+
+
+# Uncomment below to run the crosswalk detecrtion THEN the light
+# def process_frame():
+#     image = open("./stored_images/image.jpg", "wb")
+#     image.write(base64.b64decode(request.get_json()["image"]))
+#     image.close()
+#     if(session["crosswalk_detected"]):
+#         if(check_pedlight()):
+#             return "Cross light detected"
+#     elif(check_crosswalk()):
+#         session["crosswalk_detected"] = True
+#         return "Crosswalk detected"
+#     else:
+#         return "No detection"
+        
+#     return "Request completed"

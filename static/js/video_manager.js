@@ -42,7 +42,7 @@ function setup() {
 let intervalID = null;
 function startSending() {
 	if (intervalID == null) {
-		intervalID = setInterval(sendFrame, 2000); // send a frame every 2 seconds
+		intervalID = setInterval(sendFrame, 4000); // send a frame every 4 seconds
 	}
 }
 function stopSending() {
@@ -59,7 +59,7 @@ function sendFrame() {
 	canvas.height = videoHeight;
 	context.drawImage(video, 0, 0, videoWidth, videoHeight);
 
-	const base64 = canvas.toDataURL("image/png");
+	const base64 = canvas.toDataURL("image/jpeg");
 	const imgData = base64.slice(22);
 
 	var xhttp = new XMLHttpRequest();
@@ -67,6 +67,9 @@ function sendFrame() {
 	xhttp.setRequestHeader("Content-Type", "application/json");
 	xhttp.onload = function () {
 		console.log(this.responseText);
+		if(this.responseText == "Cross light detected") {
+			stopSending();
+		}
 	};
 	const body = { image: imgData, width: videoWidth, height: videoHeight };
 	console.log(imgData);
