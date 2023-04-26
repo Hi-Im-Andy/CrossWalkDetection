@@ -10,6 +10,9 @@ from os import urandom
 # Text to speech funciton(s)
 from tts import say
 
+# Importing machine learning
+from ml import check_pedlight, check_crosswalk
+
 
 app = Flask(__name__)
 # Set a secret_key to use session/login_manager
@@ -47,4 +50,8 @@ def off():
 @app.route("/on")
 def on():
     say("Camera on.")
+    # check_pedlight.delay(live_feed)
     return render_template("on.html")
+
+
+# flask run
