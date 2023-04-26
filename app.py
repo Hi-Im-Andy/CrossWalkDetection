@@ -3,6 +3,9 @@
 ###################################################
 # Generic imports
 from flask import Flask, render_template, request, url_for, redirect, session
+import base64
+import cv2
+import numpy as np
 
 # For the session secret key
 from os import urandom
@@ -24,9 +27,11 @@ app.secret_key = urandom(12)
 ##################################################
 
 from sys import stdout
+
 # Since print needs to have the file specified to stdout just make a separate function to simplify debug calls
 def p(*kwargs):
     print(kwargs, file=stdout)
+
 
 ###################################################
 #                Route definitions                #
@@ -42,11 +47,13 @@ def favicon():
 def home():
     return redirect(url_for("off"))
 
+
 @app.route("/off")
 def off():
     say("Off.")
     return render_template("off.html")
-    
+
+
 @app.route("/on")
 def on():
     say("Camera on.")
@@ -54,4 +61,9 @@ def on():
     return render_template("on.html")
 
 
-# flask run
+@app.route("/process_frame", methods=["POST"])
+def process_frame():
+    image = open("./stored_images/tmp.png", "wb")
+    image.write(base64.b64decode(request.get_json()["image"]))
+    image.close()
+    return "Request completed"

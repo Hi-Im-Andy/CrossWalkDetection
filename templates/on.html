@@ -13,26 +13,13 @@
 		<div id="container">
 			<video autoplay="true" id="videoElement"></video>
 		</div>
-		<script>
-			let video = document.querySelector("#videoElement");
-			if (navigator.mediaDevices.getUserMedia) {
-				navigator.mediaDevices
-					.getUserMedia({ video: true })
-					.then(function (stream) {
-						video.srcObject = stream;
-					})
-					.catch(function (error) {
-						console.log("an error has occured!");
-					});
-			} else {
-				console.log("getUserMedia not supported ");
-			}
-		</script>
 		<div id="buttons">
 			<!-- replace the "on click" route with your function -->
 			<button class="off_button" onclick="window.location.href='/off'">
 				POWER OFF
 			</button>
 		</div>
+		<canvas id="canvas"></canvas>
 	</body>
+	<script src="static/js/video_manager.js"></script>
 </html>

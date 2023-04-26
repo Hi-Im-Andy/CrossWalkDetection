@@ -51,3 +51,7 @@ h2 {
 	width: 200px;
 	border-radius: 100px;
 }
+
+#canvas {
+	display: none;
+  }
