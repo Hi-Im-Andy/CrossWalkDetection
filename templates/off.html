@@ -8,18 +8,19 @@
 		<link rel="stylesheet" href="static/css/styles.css" />
 	</head>
 	<body>
-		<h1>CROSS AID</h1>
-		<h2>Status: Powered Off</h2>
-		<div id="container">
-			<video autoplay="true" id="videoElement"></video>
-		</div>
-		<script></script>
+		<div class="container">
+			<h1>CROSS AID</h1>
+			<h2>Status: <span class="off_label">Powered Off</span></h2>
+			<div id="video_container">
+				<video autoplay="true" id="videoElement"></video>
+			</div>
+			<script></script>
 
-		<div id="buttons">
-			<!-- replace the "on click" route with your function -->
-			<button class="on_button" onclick="window.location.href='/on'">
-				POWER ON
-			</button>
+			<div id="buttons">
+				<button class="on_button" onclick="window.location.href='/on'">
+					POWER ON
+				</button>
+			</div>
 		</div>
 	</body>
 </html>
