@@ -25,6 +25,7 @@ def say(direction):
     text = str(direction)
     text_audio = gTTS(text)
     text_audio.save("speech.mp3")
+    # os.system("start speech.mp3")
     os.system("mpg321 speech.mp3")
 
 # Placeholder
