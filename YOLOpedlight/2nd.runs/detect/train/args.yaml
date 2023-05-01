@@ -1,10 +1,10 @@
 task: detect
 mode: train
-model: yolov8l.pt
+model: yolov8x.pt
 data: data_custom.yaml
 epochs: 100
 patience: 50
-batch: 4
+batch: 8
 imgsz: 640
 save: true
 save_period: -1
