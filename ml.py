@@ -1,33 +1,11 @@
 # Before running, make sure to install ultralytics
-
-##################################################
-#                   Celery                       #
-##################################################
-
-# Import for backgound tasks, can be used to add delays, task be completed after the return
-from celery import Celery
-
-from flask import Flask
-
-app = Flask(__name__)
-
-
-
-# Create a celery instance
-celery = Celery(app.name, broker='pyamqp://guest@localhost//')
-
-# Set up configuration for celery
-celery.conf.update(
-    result_expires=3600,
-)
-
 ##################################################
 #           Machine learning results             #
 ##################################################
 
 from ultralytics import YOLO
 from tts import say
-
+from sys import stdout
 
 ped_model = YOLO('YOLOpedlight/yolov8l_custom.pt')
 cross_model = YOLO('YOLOcrosswalk/yolov8n_custom.pt') #Uncomment this for crosswalk
@@ -52,16 +30,18 @@ cross_model = YOLO('YOLOcrosswalk/yolov8n_custom.pt') #Uncomment this for crossw
 # Call the 'say()' function with go
 
 
+# for these functions, returning None means no detection, false/true means negative/positive detection
 
-@celery.task
 def check_pedlight():
     ped_result = ped_model("stored_images/image.jpg") # Need to find location of the live feed
     probability_ped = ped_result[0].boxes.cls
 
+    print(probability_ped, file=stdout)
+
     if(len(probability_ped) < 1):
         say("Adjust camera to locate sign")
         print("Adjust camera to locate sign")
-        return False
+        return None
 
     elif(probability_ped[0] == 1): # If sign shows go
         say("You can cross")
@@ -71,22 +51,24 @@ def check_pedlight():
     elif(probability_ped[0] == 0):
         say("Wait")
         print("Wait")
+        return False
         
-    return False
+    return None
 
 
 # Same as the previous code but for the crosswalk instead of the light
-@celery.task
 def check_crosswalk():
     cross_result = cross_model('YOLOcrosswalk/val/images/Test (177).jpg') # Need to find location of the live feed
     probability_cross = cross_result[0].boxes.cls
 
-    print(probability_cross)
+    print(probability_cross, file=stdout)
+
+    return True
 
     if(len(probability_cross) < 1):
         say("Find crosswalk")
         print("Find crosswalk")
-        return False
+        return None
 
     elif(probability_cross[0] >= 1): # If sign shows go
         say("Crosswalk found")
@@ -96,6 +78,7 @@ def check_crosswalk():
     elif(probability_cross[0] == 0):
         say("Find the crosswalk")
         print("Find the crosswalk")
+        return None
         
-    return False
+    return None
 

@@ -29,6 +29,7 @@ function setup() {
 					canvas.setAttribute("height", videoHeight);
 
 					startSending();
+					say("Camera on!");
 					streaming = true;
 				}
 			},
@@ -66,8 +67,8 @@ function sendFrame() {
 	xhttp.open("POST", "http://127.0.0.1:5000/process_frame");
 	xhttp.setRequestHeader("Content-Type", "application/json");
 	xhttp.onload = function () {
-		console.log(this.responseText);
-		if(this.responseText == "Cross light detected") {
+		processResponse(this.responseText);
+		if(state == 3) {
 			stopSending();
 		}
 	};
@@ -77,3 +78,39 @@ function sendFrame() {
 }
 
 setup();
+
+// 0 means nothing detected
+// 1 means crosswalk found, no news on sign yet
+// 2 means light found but don't cross
+// 3 means time to cross
+let state = 0;
+function processResponse(responseText) {
+	if(state == 0) {
+		// Response can be either "No crosswalk detected" or "Crosswalk detected"
+		if(responseText == "Crosswalk detected") {
+			state = 1;
+			say("Crosswalk detected, hold for sign detection");
+		} else if(responseText == "No crosswalk detected") {
+			say("Crosswalk not detected, adjust camera");
+		}
+	} else if(state == 1 || state == 2) {
+		// Response can be either "No light detected", "Not ready to cross", or "You can cross"
+		if(responseText = "No light detected") {
+			say("Crossing light not detected, adjust camera");
+		} else if(responseText = "Not ready to cross") {
+			state = 2;
+			say("Crossing light red, maintain camera angle but don't cross yet");
+		} else if(responseText = "You can cross") {
+			state = 3;
+			say("Crossing light changed, you can cross safely");
+		}
+	} else if(state == 3) {
+		say("You're safe to cross");
+	}
+}
+
+function say(text) {
+	let utterance = new SpeechSynthesisUtterance(text);
+	speechSynthesis.speak(utterance);
+	console.log("Speaking", text);
+}
