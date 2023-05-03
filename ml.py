@@ -63,7 +63,7 @@ def check_crosswalk():
 
     print(probability_cross, file=stdout)
 
-    return True
+    # return True
 
     if(len(probability_cross) < 1):
         say("Find crosswalk")
